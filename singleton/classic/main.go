@@ -1,9 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"runtime"
+	"sync"
+)
 
 func main() {
-	singleton := GetInstance()
+	// Additional parallelizer.
+	runtime.GOMAXPROCS(1000)
 
-	fmt.Println(singleton.GetDescription())
+	wg := &sync.WaitGroup{}
+
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+
+			singleton := Instance()
+			singleton.DoJob()
+		}()
+	}
+
+	wg.Wait()
 }

@@ -1,6 +1,9 @@
 package main
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 var (
 	uniqueInstance *Singleton = nil
@@ -8,19 +11,19 @@ var (
 )
 
 type Singleton struct {
-	// other useful instance variables here
 }
 
 func newSingleton() *Singleton {
+	fmt.Println("Thread safe Singleton is created!")
+
 	return &Singleton{}
 }
 
-// other useful methods here
-func (s *Singleton) GetDescription() string {
-	return "I'm a thread safe Singleton!"
+func (s *Singleton) DoJob() {
+	fmt.Println("Thread safe Singleton is doing its job...")
 }
 
-func GetInstance() *Singleton {
+func Instance() *Singleton {
 	mu.Lock()
 	defer mu.Unlock()
 
